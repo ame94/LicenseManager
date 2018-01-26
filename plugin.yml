@@ -1,0 +1,13 @@
+name: LicenseManager
+version: 1.0
+description: Book based License Manager
+author: Adria Elmswood
+main: ca.adria.licensemanager.PluginMain
+
+commands:
+    lmgr:
+        description: The base License Manager command
+        aliases: [licensemanager,lm]
+        permission: licensemanager.lmgr
+        permission-message: §4You are not permitted to use this plugin.
+        usage: Please use '/lmgr help' for more info.
