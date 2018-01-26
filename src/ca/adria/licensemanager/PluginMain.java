@@ -1,9 +1,11 @@
 package ca.adria.licensemanager;
 
+import ca.adria.licensemanager.event.BookListener;
 import ca.adria.licensemanager.util.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginMain extends JavaPlugin {
@@ -11,6 +13,10 @@ public class PluginMain extends JavaPlugin {
     @Override
     public void onEnable() {
         Logger.Info("Starting up.");
+
+        // Register events
+        PluginManager pluginMgr = this.getServer().getPluginManager();
+        pluginMgr.registerEvents(new BookListener(), this);
     }
 
     @Override
