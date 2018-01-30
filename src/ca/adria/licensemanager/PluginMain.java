@@ -2,13 +2,21 @@ package ca.adria.licensemanager;
 
 import ca.adria.licensemanager.event.BookListener;
 import ca.adria.licensemanager.util.Logger;
+import ca.adria.licensemanager.license.Examine;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class PluginMain extends JavaPlugin {
+import java.io.File;
+
+public class PluginMain extends JavaPlugin implements CommandExecutor {
+
+    public static File DataFolder;
 
     @Override
     public void onEnable() {
@@ -17,6 +25,8 @@ public class PluginMain extends JavaPlugin {
         // Register events
         PluginManager pluginMgr = this.getServer().getPluginManager();
         pluginMgr.registerEvents(new BookListener(), this);
+
+        DataFolder = getDataFolder();
     }
 
     @Override
@@ -24,15 +34,23 @@ public class PluginMain extends JavaPlugin {
         Logger.Info("Shutting down.");
     }
 
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (cmd.getName().equalsIgnoreCase("lmgr")) {
-            sender.sendMessage(ChatColor.YELLOW + "License Manager base command.");
-
+            if (sender instanceof Player) {
+                // Execute player-only commands
+                switch (args[0]) {
+                    case "examine":
+                        Examine.isLicense((Player)sender);
+                        break;
+                    default:
+                        sender.sendMessage(ChatColor.YELLOW + "Unknown command!");
+                        break;
+                }
+            }
             return true;
         }
-
         return false;
     }
-
 }
